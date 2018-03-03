@@ -1,0 +1,10 @@
+{
+    "random_dim": 10,
+    "image_directory": "",
+    "resized_image_directory": "",
+    "resolution": {
+        "width": 512,
+        "height": 512
+    },
+    "rgba2rgb": true
+}
