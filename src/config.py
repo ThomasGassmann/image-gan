@@ -3,11 +3,13 @@ import glob
 import os
 import ntpath
 import cv2
+import sys
 from PIL import Image
 
 class Configuration:
     def __init__(self, config = 'config.json'):
-        self.data = json.load(config)
+        file_data = open(config).read()
+        self.data = json.loads(file_data)
 
     def get_random_dim(self):
         return int(self.data['random_dim'])
@@ -32,9 +34,9 @@ class Configuration:
             if not os.path.isfile(destination_path):
                 img = cv2.imread(file)
                 img = cv2.resize(img, (width, height))
-                cv2.imwrite(destination_path)
+                cv2.imwrite(destination_path, img)
                 if rgba2rgb:
-                    __rgb2rgba(destination_path)
+                    self.__rgb2rgba(destination_path)
 
         return glob.glob(resized_image_dir + '/**/*.jpg', recursive=False)
 
