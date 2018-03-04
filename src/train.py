@@ -72,10 +72,7 @@ for e in range(1, epochs + 1):
         image_batch = images[np.random.randint(0, images.shape[0], size=batch_size)]
 
         # Generate fake MNIST images
-        print(noise)
         generated_images = generator_network.predict(noise)
-        print(generated_images.shape)
-        print(image_batch.shape)
         X = np.concatenate([image_batch, generated_images])
 
         y_dis = np.zeros(2 * batch_size)
