@@ -12,6 +12,8 @@ np.random.seed(4242)
 
 from keras.datasets import mnist
 (images, _), (_, _) = mnist.load_data()
+images = (images.astype(np.float32) - 127.5)/127.5
+images = images.reshape(60000, 784)
 
 configuration = Configuration()
 # images = configuration.load_data()
@@ -70,7 +72,10 @@ for e in range(1, epochs + 1):
         image_batch = images[np.random.randint(0, images.shape[0], size=batch_size)]
 
         # Generate fake MNIST images
+        print(noise)
         generated_images = generator_network.predict(noise)
+        print(generated_images.shape)
+        print(image_batch.shape)
         X = np.concatenate([image_batch, generated_images])
 
         y_dis = np.zeros(2 * batch_size)
