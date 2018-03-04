@@ -4,8 +4,8 @@ from keras.optimizers import Optimizer
 import os
 import numpy as np
 from tqdm import tqdm
-import matplotlib.pyplot as plt
 
+from plot import plot_loss, plot_images
 from discriminator import Discriminator
 from generator import Generator
 from config import Configuration
@@ -62,10 +62,10 @@ class GAN:
             self.generator_losses.append(g_loss)
 
             if e == 1 or e % 20 == 0:
-                self.__plot(e)
+                plot_images(e, self.generator)
                 self.save_models('./epochs/' + str(e))
 
-        self.__plot_loss(e)
+        plot_loss(e, self.discriminator_losses, self.generator_losses)
 
 
     def __build(self):
@@ -77,32 +77,3 @@ class GAN:
         gan = Model(inputs=gan_input, outputs=gan_output)
         gan.compile(loss='binary_crossentropy', optimizer=self.optimizer)
         self.gan = gan
-
-
-    def __plot_loss(self, epoch):
-        plt.figure(figsize=(10, 8))
-        plt.plot(self.discriminator_losses, label='Discriminitive loss')
-        plt.plot(self.generator_losses, label='Generative loss')
-        plt.xlabel('Epoch')
-        plt.ylabel('Loss')
-        plt.legend()
-        plt.savefig('epochs/' + str(epoch) + '/gan_loss_epoch_%d.png' % epoch)
-
-
-    def __plot(self, epoch):
-        examples=100
-        dim=(10, 10)
-        figsize=(10, 10)
-        noise = np.random.normal(0, 1, size=[examples, self.configuration.get_random_dim()])
-        generated_images = self.generator.predict(noise)
-        generated_images = generated_images.reshape(examples, 28, 28)
-
-        plt.figure(figsize=figsize)
-        for i in range(generated_images.shape[0]):
-            plt.subplot(dim[0], dim[1], i+1)
-            plt.imshow(generated_images[i], interpolation='nearest', cmap='gray_r')
-            plt.axis('off')
-        plt.tight_layout()
-        if not os.path.exists('images'):
-            os.makedirs('images')
-        plt.savefig('images/gan_generated_image_epoch_%d.png' % epoch)
