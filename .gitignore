@@ -1,0 +1,7 @@
+epochs/
+images/
+models/
+__pycache__/
+*.pyc
+*.h5
+*.png
