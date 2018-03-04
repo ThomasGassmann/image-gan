@@ -21,7 +21,7 @@ random_dim = configuration.get_random_dim()
 
 optimizer = Adam(lr=0.0002, beta_1=0.5)
 batch_size = 128
-epochs = 200
+epochs = 50
 
 # Build GAN
 generator = Generator()
