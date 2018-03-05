@@ -8,13 +8,12 @@ from tqdm import tqdm
 from plot import plot_loss, plot_images
 from discriminator import Discriminator
 from generator import Generator
-from config import Configuration
 
 class GAN:
-    def __init__(self, generator: Generator, discriminator: Discriminator, optimizer: Optimizer):
+    def __init__(self, generator: Generator, discriminator: Discriminator, optimizer: Optimizer, random_dimension):
+        self.random_dim = random_dimension
         self.generator = generator.build(optimizer)
         self.discriminator = discriminator.build(optimizer)
-        self.configuration = Configuration()
         self.discriminator_losses = []
         self.generator_losses = []
         self.optimizer = optimizer
@@ -31,11 +30,10 @@ class GAN:
 
     def train(self, images, epochs, batch_size):
         self.__build()
-        random_dim = self.configuration.get_random_dim()
         batch_count = int(images.shape[0] / batch_size)
         for e in range(1, epochs + 1):    
             for _ in tqdm(range(batch_count)):
-                noise = np.random.normal(0, 1, size=[batch_size, random_dim])
+                noise = np.random.normal(0, 1, size=[batch_size, self.random_dim])
                 image_batch = images[np.random.randint(0, images.shape[0], size=batch_size)]
 
                 # Generate fake MNIST images
@@ -54,7 +52,7 @@ class GAN:
                 d_loss = self.discriminator.train_on_batch(X, y_dis)
 
                 # Train generator
-                noise = np.random.normal(0, 1, size=[batch_size, random_dim])
+                noise = np.random.normal(0, 1, size=[batch_size, self.random_dim])
                 y_gen = np.ones(batch_size)
                 g_loss = self.gan.train_on_batch(noise, y_gen)
 
@@ -62,7 +60,7 @@ class GAN:
             self.generator_losses.append(g_loss)
 
             if e == 1 or e % 20 == 0:
-                plot_images(e, self.generator)
+                plot_images(e, self.generator, self.random_dim)
                 self.save_models('./epochs/' + str(e))
 
         plot_loss(e, self.discriminator_losses, self.generator_losses)
@@ -70,8 +68,7 @@ class GAN:
 
     def __build(self):
         self.discriminator.trainable = False
-        random_dim = self.configuration.get_random_dim()
-        gan_input = Input(shape=(random_dim,))
+        gan_input = Input(shape=(self.random_dim,))
         x = self.generator(gan_input)
         gan_output = self.discriminator(x)
         gan = Model(inputs=gan_input, outputs=gan_output)

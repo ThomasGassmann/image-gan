@@ -2,9 +2,7 @@ import matplotlib.pyplot as plt
 import os
 import numpy as np
 
-from config import Configuration
-
-def plot_loss(self, epoch, discriminator_losses, generator_losses):
+def plot_loss(epoch, discriminator_losses, generator_losses):
     plt.figure(figsize=(10, 8))
     plt.plot(discriminator_losses, label='Discriminitive loss')
     plt.plot(generator_losses, label='Generative loss')
@@ -14,12 +12,11 @@ def plot_loss(self, epoch, discriminator_losses, generator_losses):
     plt.savefig('epochs/' + str(epoch) + '/gan_loss_epoch_%d.png' % epoch)
 
 
-def plot_images(self, epoch, generator):
+def plot_images(epoch, generator, random_dim):
     examples=100
     dim=(10, 10)
     figsize=(10, 10)
-    configuration = Configuration()
-    noise = np.random.normal(0, 1, size=[examples, configuration.get_random_dim()])
+    noise = np.random.normal(0, 1, size=[examples, random_dim])
     generated_images = generator.predict(noise)
     generated_images = generated_images.reshape(examples, 28, 28)
 

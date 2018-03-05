@@ -4,8 +4,6 @@ from keras.layers.advanced_activations import LeakyReLU
 from keras import initializers
 from keras.optimizers import Optimizer
 
-from config import Configuration
-
 class Discriminator:
     def build(self, optimizer: Optimizer):
         discriminator = Sequential()

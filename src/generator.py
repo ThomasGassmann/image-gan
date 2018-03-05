@@ -4,13 +4,9 @@ from keras.layers.advanced_activations import LeakyReLU
 from keras import initializers
 from keras.optimizers import Optimizer
 
-from config import Configuration
-
 class Generator:
-    def __init__(self):
-        configuration = Configuration()
-        self.random_dim = configuration.get_random_dim()
-
+    def __init__(self, random_dimension):
+        self.random_dim = random_dimension
 
     def build(self, optimizer: Optimizer):
         generator = Sequential()
