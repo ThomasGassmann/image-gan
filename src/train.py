@@ -14,7 +14,7 @@ np.random.seed(4242)
 images = np.concatenate((images, test_images), axis=0)
 
 # Local dataset
-# images = load_data('A:\\t')
+images = load_data('./pictures')
 
 # Convert RGB values to float values
 images = (images.astype(np.float32) - 127.5) / 127.5
@@ -23,8 +23,8 @@ images = images.reshape(len(images), 784)
 
 # Parameters
 optimizer = Adam(lr=0.0002, beta_1=0.5)
-batch_size = 128
-epochs = 50
+batch_size = 10
+epochs = 1000
 random_dimension = 10
 
 # Build GAN

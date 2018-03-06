@@ -5,3 +5,7 @@ __pycache__/
 *.pyc
 *.h5
 *.png
+pictures/
+*.jpg
+*.zip
+Klassenliste.html
