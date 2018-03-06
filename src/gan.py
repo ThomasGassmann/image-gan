@@ -47,6 +47,7 @@ class GAN:
                 # Label smoothing (see: https://github.com/aleju/papers/blob/master/neural-nets/Improved_Techniques_for_Training_GANs.md)
                 # All images from 0 to batch_size are (caused by concatenation) real
                 y_dis[:batch_size] = 0.9
+                y_dis[batch_size:] = 0.1
 
                 # Train discriminator
                 d_loss = self.discriminator.train_on_batch(X, y_dis)

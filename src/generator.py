@@ -16,6 +16,6 @@ class Generator:
         generator.add(LeakyReLU(0.2))
         generator.add(Dense(1024))
         generator.add(LeakyReLU(0.2))
-        generator.add(Dense(784, activation='tanh'))
+        generator.add(Dense(256**2, activation='tanh'))
         generator.compile(loss='binary_crossentropy', optimizer=optimizer)
         return generator

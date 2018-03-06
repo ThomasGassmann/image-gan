@@ -13,7 +13,7 @@ def resize(directory):
         full_path = os.path.join(directory, file)
         image = cv2.imread(full_path)
         print('Resizing: ' + full_path)
-        resized_image = cv2.resize(image, (28, 28))
+        resized_image = cv2.resize(image, (256, 256))
         cv2.imwrite(full_path, resized_image)
 
 
@@ -45,5 +45,5 @@ def load_data(directory):
 
 
 if __name__ == '__main__':
-    data = load_data('./pictures')
+    data = toRGB('./pictures')
     print(data.shape)

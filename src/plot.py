@@ -1,6 +1,9 @@
 import matplotlib.pyplot as plt
 import os
 import numpy as np
+import scipy.misc
+from PIL import Image
+import uuid
 
 def plot_loss(epoch, discriminator_losses, generator_losses):
     plt.figure(figsize=(10, 8))
@@ -18,14 +21,13 @@ def plot_images(epoch, generator, random_dim):
     figsize=(10, 10)
     noise = np.random.normal(0, 1, size=[examples, random_dim])
     generated_images = generator.predict(noise)
-    generated_images = generated_images.reshape(examples, 28, 28)
+    generated_images = generated_images.reshape(examples, 256, 256)
+    if not os.path.exists('./images/examples'):
+        os.makedirs('./images/examples')
 
     plt.figure(figsize=figsize)
-    for i in range(generated_images.shape[0]):
-        plt.subplot(dim[0], dim[1], i+1)
-        plt.imshow(generated_images[i], interpolation='nearest', cmap='gray_r')
-        plt.axis('off')
+    guid = uuid.uuid4()
+    plt.imshow(generated_images[0], interpolation='nearest', cmap='gray_r')
+    plt.axis('off')
     plt.tight_layout()
-    if not os.path.exists('images'):
-        os.makedirs('images')
-    plt.savefig('images/gan_generated_image_epoch_%d.png' % epoch)
+    plt.savefig('images/' + str(guid) + '.png')

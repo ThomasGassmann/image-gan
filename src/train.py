@@ -19,7 +19,7 @@ images = load_data('./pictures')
 # Convert RGB values to float values
 images = (images.astype(np.float32) - 127.5) / 127.5
 # Resize images
-images = images.reshape(len(images), 784)
+images = images.reshape(len(images), 256**2)
 
 # Parameters
 optimizer = Adam(lr=0.0002, beta_1=0.5)
