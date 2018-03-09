@@ -7,7 +7,6 @@ import sys
 from PIL import Image
 import numpy as np
 
-
 def resize(directory):
     for file in os.listdir(directory):
         full_path = os.path.join(directory, file)

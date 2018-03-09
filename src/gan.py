@@ -29,7 +29,7 @@ class GAN:
 
 
     def train(self, images, epochs, batch_size):
-        self.__build()
+        gan = self.__build()
         batch_count = int(images.shape[0] / batch_size)
         for e in range(1, epochs + 1):    
             for _ in tqdm(range(batch_count)):
@@ -55,14 +55,13 @@ class GAN:
                 # Train generator
                 noise = np.random.normal(0, 1, size=[batch_size, self.random_dim])
                 y_gen = np.ones(batch_size)
-                g_loss = self.gan.train_on_batch(noise, y_gen)
+                g_loss = gan.train_on_batch(noise, y_gen)
 
             self.discriminator_losses.append(d_loss)
             self.generator_losses.append(g_loss)
 
-            if e == 1 or e % 20 == 0:
-                plot_images(e, self.generator, self.random_dim)
-                self.save_models('./epochs/' + str(e))
+            plot_images(e, self.generator, self.random_dim)
+            self.save_models('./epochs/' + str(e))
 
         plot_loss(e, self.discriminator_losses, self.generator_losses)
 
@@ -74,4 +73,4 @@ class GAN:
         gan_output = self.discriminator(x)
         gan = Model(inputs=gan_input, outputs=gan_output)
         gan.compile(loss='binary_crossentropy', optimizer=self.optimizer)
-        self.gan = gan
+        return gan

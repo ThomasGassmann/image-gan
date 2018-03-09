@@ -6,7 +6,7 @@ from PIL import Image
 import uuid
 
 def plot_loss(epoch, discriminator_losses, generator_losses):
-    plt.figure(figsize=(10, 8))
+    plt.figure(figsize=(10, 10))
     plt.plot(discriminator_losses, label='Discriminitive loss')
     plt.plot(generator_losses, label='Generative loss')
     plt.xlabel('Epoch')
@@ -17,7 +17,6 @@ def plot_loss(epoch, discriminator_losses, generator_losses):
 
 def plot_images(epoch, generator, random_dim):
     examples=100
-    dim=(10, 10)
     figsize=(10, 10)
     noise = np.random.normal(0, 1, size=[examples, random_dim])
     generated_images = generator.predict(noise)

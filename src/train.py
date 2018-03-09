@@ -23,8 +23,8 @@ images = images.reshape(len(images), 256**2)
 
 # Parameters
 optimizer = Adam(lr=0.0002, beta_1=0.5)
-batch_size = 10
-epochs = 1000
+batch_size = 128
+epochs = 5
 random_dimension = 10
 
 # Build GAN
