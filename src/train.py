@@ -1,34 +1,28 @@
 from keras.optimizers import Adam
-from keras.datasets import mnist
 import numpy as np
 
 from discriminator import Discriminator
 from generator import Generator
 from gan import GAN
 from config import load_data
+from images import load_training_images
 
 np.random.seed(4242)
 
-# MNIST dataset (use train and testing images to get more samples)
-(images, _), (test_images, _) = mnist.load_data()
-images = np.concatenate((images, test_images), axis=0)
-
-# Local dataset
-images = load_data('./pictures')
-
-# Convert RGB values to float values
-images = (images.astype(np.float32) - 127.5) / 127.5
-# Resize images
-images = images.reshape(len(images), 256**2)
-
 # Parameters
 optimizer = Adam(lr=0.0002, beta_1=0.5)
-batch_size = 128
-epochs = 5
+batch_size = 256
+epochs = 10
 random_dimension = 10
+model_directory = './epochs'
+loss_directory = './losses'
+generated_images_directory = './generated'
+
+# Load training data
+images = load_training_images('cifar10', class_to_train=4)
 
 # Build GAN
 generator = Generator(random_dimension)
 discriminator = Discriminator()
-gan = GAN(generator, discriminator, optimizer, random_dimension)
+gan = GAN(generator, discriminator, optimizer, random_dimension, model_directory, loss_directory, generated_images_directory)
 gan.train(images, epochs, batch_size)

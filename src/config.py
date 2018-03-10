@@ -41,8 +41,3 @@ def load_data(directory):
         rounded = np.rint(combined_rgb)
         return_values.append(rounded)
     return np.array(return_values)
-
-
-if __name__ == '__main__':
-    data = toRGB('./pictures')
-    print(data.shape)

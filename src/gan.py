@@ -5,25 +5,27 @@ import os
 import numpy as np
 from tqdm import tqdm
 
-from plot import plot_loss, plot_images
+from plot import plot_loss, plot_images, create_dir_if_not_exists
 from discriminator import Discriminator
 from generator import Generator
 
 class GAN:
-    def __init__(self, generator: Generator, discriminator: Discriminator, optimizer: Optimizer, random_dimension):
+    def __init__(self, generator: Generator, discriminator: Discriminator, optimizer: Optimizer, random_dimension, model_path, loss_dir, images_directory):
         self.random_dim = random_dimension
         self.generator = generator.build(optimizer)
         self.discriminator = discriminator.build(optimizer)
         self.discriminator_losses = []
         self.generator_losses = []
         self.optimizer = optimizer
+        self.model_path = model_path
+        self.loss_dir = loss_dir
+        self.img_dir = images_directory
 
 
-    def save_models(self, directory):
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-        generator_path = os.path.join(directory, 'generator.h5')
-        discriminator_path = os.path.join(directory, 'discriminator.h5')
+    def save_models(self, directory, epoch):
+        create_dir_if_not_exists(directory)
+        generator_path = os.path.join(directory, f'generator-e{epoch}.h5')
+        discriminator_path = os.path.join(directory, f'discriminator-e{epoch}.h5')
         self.generator.save(generator_path)
         self.discriminator.save(discriminator_path)
 
@@ -60,10 +62,10 @@ class GAN:
             self.discriminator_losses.append(d_loss)
             self.generator_losses.append(g_loss)
 
-            plot_images(e, self.generator, self.random_dim)
-            self.save_models('./epochs/' + str(e))
+            plot_images(e, self.generator, self.random_dim, self.img_dir)
+            self.save_models(self.model_path, e)
 
-        plot_loss(e, self.discriminator_losses, self.generator_losses)
+        plot_loss(e, self.discriminator_losses, self.generator_losses, self.loss_dir)
 
 
     def __build(self):
