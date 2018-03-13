@@ -23,7 +23,7 @@ def plot_images(epoch, generator, random_dim, directory):
     figsize=(10, 10)
     noise = np.random.normal(0, 1, size=[examples, random_dim])
     generated_images = generator.predict(noise)
-    generated_images = generated_images.reshape(examples, 32, 32)
+    generated_images = generated_images.reshape(examples, 28, 28)
 
     plt.figure(figsize=figsize)
     for i in range(generated_images.shape[0]):

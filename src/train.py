@@ -12,14 +12,14 @@ np.random.seed(4242)
 # Parameters
 optimizer = Adam(lr=0.0002, beta_1=0.5)
 batch_size = 256
-epochs = 10
+epochs = 100
 random_dimension = 10
 model_directory = './epochs'
 loss_directory = './losses'
 generated_images_directory = './generated'
 
 # Load training data
-images = load_training_images('cifar10', class_to_train=4)
+images = load_training_images('mnist')
 
 # Build GAN
 generator = Generator(random_dimension)

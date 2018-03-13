@@ -9,7 +9,6 @@ def load_training_images(type, **kwargs):
         # MNIST dataset (use train and testing images to get more samples)
         (images, _), (test_images, _) = mnist.load_data()
         images = np.concatenate((images, test_images), axis=0)
-        images = np.average(images, axis=2)
 
     if type is 'cifar10':
         # CIFAR10 dataset
@@ -18,7 +17,6 @@ def load_training_images(type, **kwargs):
         images = images[np.array([item[0] for item in y_images]) == class_to_train]
         test_images = test_images[np.array([item[0] for item in y_test_images]) == 4]
         images = np.concatenate((images, test_images), axis=0)
-        images = np.average(images, axis=3)
 
     if type is 'local':
         # Local dataset
@@ -27,5 +25,5 @@ def load_training_images(type, **kwargs):
     # Convert RGB values to float values
     images = (images.astype(np.float32) - 127.5) / 127.5
     # Resize images
-    images = images.reshape(len(images), 32**2)
+    images = images.reshape((len(images), 28**2))
     return images
